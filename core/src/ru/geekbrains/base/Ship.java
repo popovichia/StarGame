@@ -4,12 +4,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.exception.GameException;
-import ru.geekbrains.math.Rect;
-import ru.geekbrains.pool.BulletPool;
-import ru.geekbrains.pool.ExplosionPool;
-import ru.geekbrains.sprites.Bullet;
-import ru.geekbrains.sprites.Explosion;
+import ru.geekbrains.exceptions.GameException;
+import ru.geekbrains.utils.Rect;
+import ru.geekbrains.pools.PoolSpritesBullets;
+import ru.geekbrains.pools.PoolSpritesExplosions;
 
 public abstract class Ship extends Sprite {
 
@@ -18,9 +16,9 @@ public abstract class Ship extends Sprite {
     private float savedDelta = 0f;
 
     protected Rect worldBounds;
-    protected BulletPool bulletPool;
-    protected ExplosionPool explosionPool;
-    protected TextureRegion bulletRegion;
+    protected PoolSpritesBullets poolBullets;
+    protected PoolSpritesExplosions poolExplosions;
+    protected TextureRegion bulletTextureRegion;
     protected Vector2 bulletV;
     protected Vector2 bulletPos;
     protected float bulletHeight;
@@ -90,13 +88,13 @@ public abstract class Ship extends Sprite {
     }
 
     private void shoot() {
-        Bullet bullet = bulletPool.obtain();
-        bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
-        shootSound.play();
+        SpriteBullet spriteBullet = poolBullets.obtain();
+        spriteBullet.set(this, bulletTextureRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
+        shootSound.play(0.2f);
     }
 
     private void boom() {
-        Explosion explosion = explosionPool.obtain();
+        Explosion explosion = poolExplosions.obtain();
         explosion.set(pos, getHeight());
     }
 

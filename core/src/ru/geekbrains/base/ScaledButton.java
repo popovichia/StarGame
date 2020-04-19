@@ -3,7 +3,7 @@ package ru.geekbrains.base;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.exception.GameException;
+import ru.geekbrains.exceptions.GameException;
 
 public abstract class ScaledButton extends Sprite {
 

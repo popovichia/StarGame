@@ -1,10 +1,20 @@
 {
     "logs": [
         {
-            "outputFile": "/Files/git/geekbrains.ru/StarGame/android/build/intermediates/res/merged/debug/values_values.arsc.flat",
+            "outputFile": "/Files/git/StarGame/android/build/intermediates/res/merged/debug/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "/Files/git/geekbrains.ru/StarGame/android/res/values/styles.xml",
+                    "source": "/Files/git/StarGame/android/res/values/color.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                },
+                {
+                    "source": "/Files/git/StarGame/android/res/values/styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,7 +33,7 @@
                     }
                 },
                 {
-                    "source": "/Files/git/geekbrains.ru/StarGame/android/res/values/strings.xml",
+                    "source": "/Files/git/StarGame/android/res/values/strings.xml",
                     "from": {
                         "startLines": "3",
                         "startColumns": "4",
@@ -37,16 +47,6 @@
                         "startOffsets": "111",
                         "endColumns": "45",
                         "endOffsets": "152"
-                    }
-                },
-                {
-                    "source": "/Files/git/geekbrains.ru/StarGame/android/res/values/color.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "55",
-                        "endOffsets": "106"
                     }
                 }
             ]

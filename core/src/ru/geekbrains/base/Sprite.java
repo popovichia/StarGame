@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.exception.GameException;
-import ru.geekbrains.math.Rect;
+import ru.geekbrains.exceptions.GameException;
+import ru.geekbrains.utils.Rect;
 import ru.geekbrains.utils.Regions;
 
 public class Sprite extends Rect {
 
     protected float angle;
     protected float scale = 1f;
-    protected TextureRegion[] regions;
+    protected TextureRegion[] textureRegions;
     protected int frame;
     private boolean destroyed = false;
 
@@ -20,37 +20,41 @@ public class Sprite extends Rect {
 
     }
 
-    public Sprite(TextureRegion region) throws GameException {
-        if (region == null) {
+    public Sprite(TextureRegion textureRegion) throws GameException {
+        if (textureRegion == null) {
             throw new GameException("Region is null");
         }
-        regions = new TextureRegion[1];
-        regions[0] = region;
+        textureRegions = new TextureRegion[1];
+        textureRegions[0] = textureRegion;
     }
 
-    public Sprite(TextureRegion region, int rows, int cols, int frames) throws GameException {
-        if (region == null) {
+    public Sprite(TextureRegion textureRegion, int rows, int cols, int frames) throws GameException {
+        if (textureRegion == null) {
             throw new GameException("Region is null");
         }
-        this.regions = Regions.split(region, rows, cols, frames);
+        this.textureRegions = Regions.split(textureRegion, rows, cols, frames);
     }
 
     public void setHeightProportion(float height) {
         setHeight(height);
-        float aspect = regions[frame].getRegionWidth() / (float) regions[frame].getRegionHeight();
+        float aspect = textureRegions[frame].getRegionWidth() / (float) textureRegions[frame].getRegionHeight();
         setWidth(height * aspect);
     }
 
     public void update(float delta) {
     }
 
-    public void draw(SpriteBatch batch) {
-        batch.draw(
-                regions[frame],
-                getLeft(), getBottom(),
-                halfWidth, halfHeight,
-                getWidth(), getHeight(),
-                scale, scale,
+    public void draw(SpriteBatch spriteBatch) {
+        spriteBatch.draw(
+                textureRegions[frame],
+                getLeft(),
+                getBottom(),
+                halfWidth,
+                halfHeight,
+                getWidth(),
+                getHeight(),
+                scale,
+                scale,
                 angle
         );
     }

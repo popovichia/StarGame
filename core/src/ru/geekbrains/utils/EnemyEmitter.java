@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.math.Rect;
-import ru.geekbrains.math.Rnd;
-import ru.geekbrains.pool.EnemyPool;
-import ru.geekbrains.sprites.Enemy;
+import ru.geekbrains.pools.PoolSpritesEnemies;
+import ru.geekbrains.enemies.ShipEnemy;
 
 public class EnemyEmitter {
 
@@ -48,14 +46,14 @@ public class EnemyEmitter {
     private final Vector2 enemyMediumV;
     private final Vector2 enemyBigV;
 
-    private final EnemyPool enemyPool;
+    private final PoolSpritesEnemies poolEnemies;
 
     private int level = 1;
 
-    public EnemyEmitter(TextureAtlas atlas, EnemyPool enemyPool, Rect worldBounds, Sound shootSound) {
+    public EnemyEmitter(TextureAtlas atlas, PoolSpritesEnemies poolEnemies, Rect worldBounds, Sound shootSound) {
         this.worldBounds = worldBounds;
         this.shootSound = shootSound;
-        this.enemyPool = enemyPool;
+        this.poolEnemies = poolEnemies;
         this.bulletRegion = atlas.findRegion("bulletEnemy");
         TextureRegion enemy0 = atlas.findRegion("enemy0");
         this.enemySmallRegion = Regions.split(enemy0, 1, 2, 2);
@@ -73,10 +71,10 @@ public class EnemyEmitter {
         generateTimer += delta;
         if (generateTimer >= generateInterval) {
             generateTimer = 0f;
-            Enemy enemy = enemyPool.obtain();
+            ShipEnemy shipEnemy = poolEnemies.obtain();
             float type = (float) Math.random();
             if (type < 0.5f) {
-                enemy.set(
+                shipEnemy.set(
                         enemySmallRegion,
                         enemySmallV,
                         bulletRegion,
@@ -89,7 +87,7 @@ public class EnemyEmitter {
                         ENEMY_SMALL_HEIGHT
                 );
             } else if (type < 0.8f) {
-                enemy.set(
+                shipEnemy.set(
                         enemyMediumRegion,
                         enemyMediumV,
                         bulletRegion,
@@ -102,7 +100,7 @@ public class EnemyEmitter {
                         ENEMY_MEDIUM_HEIGHT
                 );
             } else {
-                enemy.set(
+                shipEnemy.set(
                         enemyBigRegion,
                         enemyBigV,
                         bulletRegion,
@@ -115,11 +113,57 @@ public class EnemyEmitter {
                         ENEMY_BIG_HEIGHT
                 );
             }
-            enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
-            enemy.setBottom(worldBounds.getTop());
+            shipEnemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + shipEnemy.getHalfWidth(), worldBounds.getRight() - shipEnemy.getHalfWidth());
+            shipEnemy.setBottom(worldBounds.getTop());
         }
     }
-
+    public void generate(String typeShip) {
+        ShipEnemy shipEnemy = poolEnemies.obtain();
+        if (typeShip.equals("small")) {
+            shipEnemy.set(
+                    enemySmallRegion,
+                    enemySmallV,
+                    bulletRegion,
+                    ENEMY_SMALL_BULLET_HEIGHT,
+                    ENEMY_SMALL_BULLET_VY,
+                    ENEMY_SMALL_DAMAGE * level,
+                    ENEMY_SMALL_RELOAD_INTERVAL,
+                    shootSound,
+                    ENEMY_SMALL_HP,
+                    ENEMY_SMALL_HEIGHT
+            );
+        }
+        if (typeShip.equals("medium")) {
+            shipEnemy.set(
+                    enemyMediumRegion,
+                    enemyMediumV,
+                    bulletRegion,
+                    ENEMY_MEDIUM_BULLET_HEIGHT,
+                    ENEMY_MEDIUM_BULLET_VY,
+                    ENEMY_MEDIUM_DAMAGE * level,
+                    ENEMY_MEDIUM_RELOAD_INTERVAL,
+                    shootSound,
+                    ENEMY_MEDIUM_HP,
+                    ENEMY_MEDIUM_HEIGHT
+            );
+        }
+        if (typeShip.equals("big")) {
+            shipEnemy.set(
+                    enemyBigRegion,
+                    enemyBigV,
+                    bulletRegion,
+                    ENEMY_BIG_BULLET_HEIGHT,
+                    ENEMY_BIG_BULLET_VY,
+                    ENEMY_BIG_DAMAGE * level,
+                    ENEMY_BIG_RELOAD_INTERVAL,
+                    shootSound,
+                    ENEMY_BIG_HP,
+                    ENEMY_BIG_HEIGHT
+            );
+        }
+        shipEnemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + shipEnemy.getHalfWidth(), worldBounds.getRight() - shipEnemy.getHalfWidth());
+        shipEnemy.setBottom(worldBounds.getTop());
+    }
     public int getLevel() {
         return level;
     }
