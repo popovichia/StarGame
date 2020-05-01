@@ -15,6 +15,8 @@ public class MainShip extends Ship {
 
     private static final int HP = 100;
     private static final float SHIP_HEIGHT = 0.15f;
+    private float currentShipHeight = 0f;
+    private static final float ZOOM_SHIP_HEIGHT = 0.005f;
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
 
@@ -40,7 +42,13 @@ public class MainShip extends Ship {
         damage = 1;
         hp = HP;
     }
-
+    public void Appearance(Rect worldBounds) {
+        if (currentShipHeight < 1f) {
+            setScale(currentShipHeight += ZOOM_SHIP_HEIGHT);
+        } else {
+            moveDownAuto();
+        }
+    }
     public void startNewGame(Rect worldBounds) {
         flushDestroy();
         hp = HP;
@@ -56,7 +64,7 @@ public class MainShip extends Ship {
     public void resize(Rect worldBounds) {
         this.worldBounds = worldBounds;
         setHeightProportion(SHIP_HEIGHT);
-        setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
+//        setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
     }
 
     @Override
@@ -164,10 +172,19 @@ public class MainShip extends Ship {
     }
 
     private void moveLeft() {
-        v.set(v0).rotate(180);
+        v.set(v0).rotate(180f);
     }
-
+    private void moveDownAuto() {
+        if (worldBounds.getBottom() + BOTTOM_MARGIN - getBottom() < -0.005f) {
+            this.pos.add(new Vector2(0f, -0.005f));
+        } else {
+            this.setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
+        }
+    }
     private void stop() {
         v.setZero();
+    }
+    public boolean onStartPoint() {
+        return getBottom() == worldBounds.getBottom() + BOTTOM_MARGIN;
     }
 }

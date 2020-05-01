@@ -115,11 +115,13 @@ public class EnemyEmitter {
                         ENEMY_BIG_HEIGHT
                 );
             }
-            enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
-            enemy.setBottom(worldBounds.getTop());
+            generateX(enemy);
         }
     }
-
+    private void generateX(Enemy enemy) {
+        enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
+        enemy.setBottom(worldBounds.getTop());
+    }
     public int getLevel() {
         return level;
     }
