@@ -29,7 +29,7 @@ import ru.geekbrains.utils.EnemyEmitter;
 
 public class GameScreen extends BaseScreen {
 
-    private enum State {PLAYING, PAUSE, GAME_OVER}
+    private enum State {INTRO, PLAYING, PAUSE, GAME_OVER}
 
     private static final int STAR_COUNT = 64;
     private static final float FONT_MARGIN = 0.01f;
@@ -88,8 +88,8 @@ public class GameScreen extends BaseScreen {
         music.setLooping(true);
         music.play();
         initSprites();
-        state = State.PLAYING;
-        prevState = State.PLAYING;
+        state = State.INTRO;
+        prevState = State.INTRO;
         frags = 0;
     }
 
@@ -206,7 +206,12 @@ public class GameScreen extends BaseScreen {
             star.update(delta);
         }
         explosionPool.updateActiveSprites(delta);
-        if (state == State.PLAYING) {
+        if (state == State.INTRO) {
+            mainShip.Appearance(worldBounds);
+            if (mainShip.onStartPoint()) {
+                state = State.PLAYING;
+            }
+        } else if (state == State.PLAYING) {
             mainShip.update(delta);
             bulletPool.updateActiveSprites(delta);
             enemyPool.updateActiveSprites(delta);
@@ -275,6 +280,9 @@ public class GameScreen extends BaseScreen {
             star.draw(batch);
         }
         switch (state) {
+            case INTRO:
+                mainShip.draw(batch);
+                break;
             case PLAYING:
                 mainShip.draw(batch);
                 enemyPool.drawActiveSprites(batch);
