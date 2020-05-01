@@ -74,7 +74,6 @@ public class EnemyEmitter {
         if (generateTimer >= generateInterval) {
             generateTimer = 0f;
             Enemy enemy = enemyPool.obtain();
-            enemy.setBottom(worldBounds.getTop());
             float type = (float) Math.random();
             if (type < 0.5f) {
                 enemy.set(
@@ -116,19 +115,13 @@ public class EnemyEmitter {
                         ENEMY_BIG_HEIGHT
                 );
             }
-            boolean isEmptyPos = false;
-            for (Enemy e : enemyPool.getActiveObjects()) {
-                if (enemy.isOutside(e)) {
-                    isEmptyPos = true;
-                }
-            }
-            if(isEmptyPos) {
-                enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
-                enemy.setBottom(worldBounds.getTop());
-            }
+            generateX(enemy);
         }
     }
-
+    private void generateX(Enemy enemy) {
+        enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
+        enemy.setBottom(worldBounds.getTop());
+    }
     public int getLevel() {
         return level;
     }
